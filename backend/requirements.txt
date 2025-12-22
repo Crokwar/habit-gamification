@@ -10,6 +10,7 @@ alembic==1.12.1 # sistema para migraciones de DB
 # security and authentication
 python-jose[cryptography]==3.3.0 # manejo de JWT
 passlib[bcrypt]==1.7.4 # encriptacion segura de contrseñas
+bcrypt==4.0.1  # ← Versión específica estable
 
 # validation and settings
 pydantic[email]==2.5.0 # Validación de datos y schemas.

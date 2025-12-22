@@ -15,7 +15,7 @@ engine = create_engine(
 )
 
 # SessionLocal para crear sesiones de DB
-SessionLocal = sessionmaker(autocommit=False, autoFlush=False, bind=engine)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # clase base para modelos; todos mis modelos heredan de esta Base - class User(Base):
 Base = declarative_base()
