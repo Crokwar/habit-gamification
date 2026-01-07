@@ -1,5 +1,22 @@
+# core framework
 fastapi==0.109.0
 uvicorn[standard]==0.27.0
-sqlalchemy==2.0.25
-psycopg2-binary==2.9.9
-python-dotenv==1.0.0
+
+# database
+sqlalchemy==2.0.25 # orm, para mapear tablas de DB
+psycopg2-binary==2.9.9 # dirver para conectar PostgreSQL
+alembic==1.12.1 # sistema para migraciones de DB
+
+# security and authentication
+python-jose[cryptography]==3.3.0 # manejo de JWT
+passlib[bcrypt]==1.7.4 # encriptacion segura de contrseñas
+bcrypt==4.0.1  # ← Versión específica estable
+
+# validation and settings
+pydantic[email]==2.5.0 # Validación de datos y schemas.
+pydantic-settings==2.1.0 # Manejo de variables de entorno.
+python-dotenv==1.0.0 # Carga variables del archivo .env
+
+# utils
+python-multipart==0.0.6 # Manejo de formularios y archivos.
+
