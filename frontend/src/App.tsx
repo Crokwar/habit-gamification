@@ -2,21 +2,24 @@ import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-do
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Register from './pages/Register';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Navigate to="/login" replace />} />
 
-        <Route path="/Login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<Dashboard />} />
 
-        <Route path="*" element={<Navigate to="/login" replace/>}/>
-      </Routes>
-     
-    </Router>
+          <Route path="*" element={<Navigate to="/login" replace/>}/>
+        </Routes>
+      
+      </Router>
+    </AuthProvider>
   )
 }
 

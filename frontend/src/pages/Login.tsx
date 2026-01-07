@@ -1,30 +1,39 @@
 import { useState } from 'react'
-import type { FormEvent, ChangeEvent } from 'react';
+import type { FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 
-interface LoginFormData {
+/*interface LoginFormData {
   email: string;
   password: string;
-}
+}*/
 
 function Login() {
+  const { login } = useAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<LoginFormData>({
+  /*const [formData, setFormData] = useState<LoginFormData>({
     email: '',
     password: ''
-  });
+  });*/
 
-  const handleChange = (e:ChangeEvent<HTMLInputElement>) => {
+  /*const handleChange = (e:ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
-  };
+  }*/
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  // funcion asincrona para el login - llamado al hook de auth
+  const handleSubmit = async(e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    //Aquí se conecta con el backend cuando ya estemos en esos pasos
-    navigate('/dashboard');
+    try {
+      await login(email, password);
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+    }
   };
 
   return (
@@ -47,8 +56,8 @@ function Login() {
               type="email"
               id='email'
               name='email'
-              value={formData.email}
-              onChange={handleChange}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="ejemplo@email.com"
               className='w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-500 focus:border-transparent'/>
@@ -63,8 +72,8 @@ function Login() {
               type="password"
               id='password'
               name='password'
-              value={formData.password}
-              onChange={handleChange}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
               placeholder="••••••••"
               className='w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-500 focus:border-transparent'/>
