@@ -20,7 +20,7 @@ export interface HabitFormData { //represents a habit in the form
     trackTime: boolean;
 }
 
-export interface HabitCreatedDTO { // data transfer object
+export interface HabitCreateDTO { // data transfer object
     title: string;
     description?: string;
     category: HabitCategory;
