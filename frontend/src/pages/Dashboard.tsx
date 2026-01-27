@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 
+
 function Dashboard() {
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -42,13 +44,21 @@ function Dashboard() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/**Card de Hábitos */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <button
+            onClick={() => navigate('/habits')}
+            className="bg-white rounded-lg shadow p-6 hover:shadow-xl transition-shadow text-left group hover:cursor-pointer"
+          >
+          <div>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-800">Mis Hábitos</h3>
               <span className="text-2xl">✅</span>
             </div>
-            <p className="text-gray-600">Lista de hábitos diarios</p>
+            <p className="text-gray-600">Gestion de hábitos diarios</p>
+            <div className="mt-4 text-indigo-600 font-medium flex items-center gap-1">
+              Ver todos →
+            </div>
           </div>
+          </button>
 
           {/**Card de Nivel Actual */}
           <div className="bg-white rounded-lg shadow p-6">
