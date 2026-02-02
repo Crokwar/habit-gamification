@@ -10,8 +10,10 @@ __pycache__/
 venv/
 env/
 ENV/
-.env
+.env*
+frontend/.env*
 .env.local
+.env.development
 
 # IDEs
 .vscode/
