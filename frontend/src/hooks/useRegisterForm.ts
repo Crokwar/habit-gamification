@@ -4,12 +4,15 @@ import { useDebounce } from './useDebounce';
 import { validateRegisterForm, validateEmail, validateUsername } from '@/utils/validators'; 
 import { DEBOUNCE_DELAY } from '../utils/constants';
 import { authService } from '@/api/authService';
-import type { RegisterFormData, RegisterPayload, AsyncStatus } from '../types/auth.types';
+import type { RegisterFormData, AsyncStatus } from '../types/auth.types';
+import { useAuth } from './useAuth';
 
 // hook para manejar el formulario de registro
 // incliye las validaciones asyncronas, sincronas y submit
 
 export const useRegisterForm = () => {
+
+    const { register } = useAuth()
 
     // base sincrona de useForm
     const baseForm = useForm<RegisterFormData>(
@@ -130,7 +133,7 @@ export const useRegisterForm = () => {
         return hasNoSyncErrors && allFieldsFilled && asyncValidationsOk && notSubmitting;
     };
 
-    // Funcion del submit
+    // Funcion del submit - para registro
     const handleRegister = async () => {
         // Verificar que se puede enviar
         if (!canSubmit()) {
@@ -142,15 +145,12 @@ export const useRegisterForm = () => {
         setIsSubmitting(true);
     
         try {
-          // Preparar payload (SIN confirmPassword)
-          const payload: RegisterPayload = {
-            email: baseForm.values.email.trim().toLowerCase(),
-            username: baseForm.values.username.trim(),
-            password: baseForm.values.password,
-          };
-    
           // Llamar a la API
-          const response = await authService.register(payload);
+          const response = await register(
+            baseForm.values.email.trim().toLowerCase(),
+            baseForm.values.username.trim(),
+            baseForm.values.password,
+          );
     
           // Reset del formulario en caso de éxito
           baseForm.reset();
@@ -164,48 +164,23 @@ export const useRegisterForm = () => {
           
         } catch (error: any) {
           console.error('Error en registro:', error);
-    
-          // Manejar errores del backend
-          if (error.response) {
-            const { status, data } = error.response;
+          
+          const message = error.message || 'Error al registrar';
             
-            // 409 Conflict - Email o username ya existe
-            if (status === 409) {
-              const detail = data.detail || '';
-              
-              if (detail.toLowerCase().includes('email')) {
-                baseForm.setFieldError('email', 'Email ya registrado');
-                setEmailStatus('taken');
-              } else if (detail.toLowerCase().includes('username')) {
-                baseForm.setFieldError('username', 'Usuario no disponible');
-                setUsernameStatus('taken');
-              } else {
-                baseForm.setFieldError('email', detail);
-              }
-            } 
-            // 422 Unprocessable Entity - Validación fallida
-            else if (status === 422) {
-              baseForm.setFieldError('email', 'Datos inválidos. Verifica los campos.');
-            }
-            // 400 Bad Request
-            else if (status === 400) {
-              baseForm.setFieldError('email', data.detail || 'Error en los datos enviados');
-            }
-            // Otros errores
-            else {
-              baseForm.setFieldError('email', 'Error al registrar. Intenta nuevamente.');
-            }
-          } else if (error.request) {
-            // Error de red (no hay respuesta del servidor)
-            baseForm.setFieldError('email', 'No se pudo conectar al servidor');
+          // 409 Conflict - Email o username ya existe
+          if (message.toLowerCase().includes('email')) {
+            baseForm.setFieldError('email', 'Email ya registrado');
+            setEmailStatus('taken');
+          } else if (message.toLowerCase().includes('username')) {
+            baseForm.setFieldError('username', 'Usuario no disponible');
+            setUsernameStatus('taken');
           } else {
-            // Otro tipo de error
-            baseForm.setFieldError('email', 'Error inesperado');
+            baseForm.setFieldError('email', message);
           }
     
           return { 
             success: false, 
-            error: error.response?.data || error.message 
+            error: message 
           };
           
         } finally {

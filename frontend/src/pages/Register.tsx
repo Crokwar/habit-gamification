@@ -31,8 +31,7 @@ function Register() {
     
     if (result.success) {
       // Registro exitoso
-      alert('¡Registro exitoso! Bienvenido');
-      navigate('/login'); // o '/dashboard'
+      navigate('/dashboard');
     } else {
       // Error en el registro (ya se muestran los errores en los campos)
       console.error('Error en registro:', result.error);
@@ -121,7 +120,7 @@ function Register() {
               name="password"
               value={values.password}
               onChange={handleChange}
-              minLength={6}
+              minLength={8}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-4 focus:ring-purple-500 focus:border-transparent"
               placeholder="••••••••" required />
             {/* Mostrar error de validación */}
@@ -141,7 +140,7 @@ function Register() {
               name="confirmPassword"
               value={values.confirmPassword}
               onChange={handleChange}
-              minLength={6}
+              minLength={8}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-4 focus:ring-purple-500 focus:border-transparent"
               placeholder="••••••••" required />
             {/* Mostrar error de validación */}

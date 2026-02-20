@@ -4,12 +4,12 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.core.config import settings
 from app.core.security import create_access_token
-from app.schemas.auth import UserRegister, UserLogin, Token, UserResponse
+from app.schemas.auth import UserRegister, UserLogin, UserResponse, AuthResponse
 from app.services.auth_service import AuthService
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
-@router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)  # 
+@router.post("/register", response_model=AuthResponse, status_code=status.HTTP_201_CREATED)  # 
 def register(user_data: UserRegister, db: Session = Depends(get_db)):  #
     """
     Registrar nuevo usuario
@@ -19,9 +19,14 @@ def register(user_data: UserRegister, db: Session = Depends(get_db)):  #
     - **password**: Contraseña (mínimo 6 caracteres)
     """
     user = AuthService.create_user(db, user_data)
-    return user 
+    access_token = create_access_token(data={"sub": user.email})
+    return {
+        "token": access_token,
+        "token_type": "bearer",
+        "user": user
+    } 
 
-@router.post("/login", response_model=Token)
+@router.post("/login", response_model=AuthResponse)
 def login(user_data: UserLogin, db: Session = Depends(get_db)):
     """
     Iniciar sesión y obtener token JWT
@@ -48,10 +53,20 @@ def login(user_data: UserLogin, db: Session = Depends(get_db)):
     )
 
     return {
-        "access_token": access_token,
-        "token_type": "bearer"
+        "token": access_token,
+        "token_type": "bearer",
+        "user": user
     }
-    
+
+@router.get("/check-username/{username}")
+def check_username(username: str, db: Session = Depends(get_db)):
+    return { "available": AuthService.check_username_available(db, username) }
+
+@router.get("/check-email/{email}")
+def check_email(email: str, db: Session = Depends(get_db)):
+    return { "available": AuthService.check_email_available(db, email) }
+
+
 @router.get("/me", response_model=UserResponse)
 def get_current_user_info(db: Session = Depends(get_db)):
     """

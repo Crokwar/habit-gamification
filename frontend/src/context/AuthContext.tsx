@@ -1,14 +1,14 @@
 // aqui se maneja el estado de autenticacion y el token de usuario
 import { createContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import type { User } from '../types/auth.types';
+import type { User, AuthResponse } from '../types/auth.types';
 import { authService } from '../api/authService';
 
 interface AuthContextType {
   user: User | null;
   token: string | null;
-  login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, name: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<AuthResponse>;
+  register: (email: string, username: string, password: string) => Promise<AuthResponse>;
   logout: () => void;
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -53,20 +53,24 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setToken(data.token);
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
+
+      return data;
     } catch (error) {
       console.error('Error en login:', error);
       throw error;
     }
   };
 
-  const register = async (email: string, password: string, name: string) => {
+  const register = async ( email: string, username: string, password: string) => {
     try {
-      const data = await authService.register({ email, password, name });
+      const data = await authService.register({ email, username, password });
       
       setUser(data.user);
       setToken(data.token);
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
+
+      return data;
     } catch (error) {
       console.error('Error en registro:', error);
       throw error;

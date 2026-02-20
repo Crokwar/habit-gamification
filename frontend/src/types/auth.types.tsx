@@ -1,26 +1,17 @@
 export interface User {
     id: string;
     email: string;
-    name: string;
+    username: string;
+    created_at: string;
 }
 
 // tipos para login de usuario
-  
 export interface LoginCredentials {
     email: string;
     password: string;
 }
   
-
-// respuesta del backend para login de usuario
-export interface AuthResponse {
-    user: User;
-    token: string;
-}
-
-
 // tipos para registro de usuario //
-
 export interface RegisterFormData {
     username: string;
     email: string;
@@ -35,14 +26,12 @@ export interface RegisterPayload {
     password: string;
 }
 
-// respuesta del backend para registro de usuario
-export interface RegisterResponse {
-    id: string;
-    email: string;
-    username: string;
-    created_at: string;
+// respuesta del backend para login y registro 
+export interface AuthResponse {
+    token: string;
+    token_type: string;
+    user: User;
 }
-
 
 // tipo para validacion de formulario de registro //
 

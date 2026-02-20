@@ -5,11 +5,11 @@ export interface ApiResponse<T> { // tipo para respuestas del backend
     success: boolean;
 }
 
-export interface ApiError { // tipo para errores del backend
+/**export interface ApiError { // tipo para errores del backend (no se usa aun)
     message: string;
     code?: string;
     details?: Record<string, string[]>;
-}
+}*/
 
 export interface PaginatedResponse <T> { // futuro: endpoints paginados (rankings, historial ...)
     data: T[];
