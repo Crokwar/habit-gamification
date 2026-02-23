@@ -15,6 +15,7 @@ from app.core.database import Base
 # Importar modelos 
 # Importa cada modelo que se cree
 from app.models.user import User
+from app.models.habits import Habit, HabitCompletion
 
 # Objeto de configuracion de Alembic
 config = context.config
