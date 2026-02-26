@@ -3,6 +3,11 @@ from typing import Optional  # tipado opcional en funciones
 from jose import JWTError, jwt  # libreria para JWT
 from passlib.context import CryptContext  # Para manejar hashing de contraseñas
 from app.core.config import settings  # configuraciones de app
+from app.core.database import get_db
+from app.models.user import User
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy.orm import Session
 
 # crear contexto para hashing usando bcrypt
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -41,3 +46,28 @@ def decode_access_token(token: str) -> Optional[dict]:
         return payload
     except JWTError:
         return None
+
+
+# extraer el usuario del jwt
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+
+def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Token inválido o expirado",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    
+    payload = decode_access_token(token)
+    if payload is None:
+        raise credentials_exception
+    
+    user_id: int = payload.get("sub")
+    if user_id is None:
+        raise credentials_exception
+    
+    user = db.query(User).filter(User.id == user_id).first()
+    if user is None:
+        raise credentials_exception
+    
+    return user
