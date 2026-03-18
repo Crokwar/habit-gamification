@@ -6,7 +6,7 @@ export type ValidationErrors<T> = Partial<Record<keyof T, string>>;
 
 // Validaciones de autenticacion
 
-export const validateUsername = (username: string): string => {
+export const validateUsername = (username: string): string | undefined => {
   if (!username) return ERROR_MESSAGES.REQUIRED_FIELD;
   if (username.length < VALIDATION_RULES.USERNAME_MIN_LENGTH) {
     return ERROR_MESSAGES.USERNAME_TOO_SHORT;
@@ -15,17 +15,15 @@ export const validateUsername = (username: string): string => {
   if (!usernameRegex.test(username)) {
     return ERROR_MESSAGES.INVALID_USERNAME;
   }
-  return '';
 }
 
-export const validateEmail = (email: string): string => {
+export const validateEmail = (email: string): string | undefined => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) return ERROR_MESSAGES.REQUIRED_FIELD;
     if (!emailRegex.test(email)) return ERROR_MESSAGES.INVALID_EMAIL;
-    return '';
 };
 
-export const validatePassword = (password: string): string => {
+export const validatePassword = (password: string): string | undefined => {
     if (!password) return ERROR_MESSAGES.REQUIRED_FIELD;
     if (password.length < VALIDATION_RULES.PASSWORD_MIN_LENGTH) {
       return ERROR_MESSAGES.PASSWORD_TOO_SHORT;
@@ -42,13 +40,11 @@ export const validatePassword = (password: string): string => {
     if (!/\d/.test(password)) {
       return ERROR_MESSAGES.PASSWORD_NEEDS_NUMBER;
     }
-    return '';
 };
 
-export const validateConfirmPassword = (password: string, confirmPassword: string): string => {
+export const validateConfirmPassword = (password: string, confirmPassword: string): string | undefined => {
   if (!confirmPassword) return ERROR_MESSAGES.REQUIRED_FIELD;
   if (confirmPassword !== password) return ERROR_MESSAGES.PASSWORDS_DO_NOT_MATCH;
-  return '';
 };
 
 export const validateRegisterForm = (formData: RegisterFormData): ValidationErrors<RegisterFormData> => {

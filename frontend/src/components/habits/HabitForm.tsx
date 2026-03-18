@@ -61,15 +61,15 @@ export default function HabitForm({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center rounded-t-2xl">
-          <h2 className="text-2xl font-bold text-gray-800">
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
+      <div className="bg-black text-[#cebea4] rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-[#cebea4]/60">
+        <div className="sticky top-0 bg-black border-b border-[#cebea4]/40 px-6 py-4 flex justify-between items-center rounded-t-2xl">
+          <h2 className="text-2xl font-bold text-[#ff5730]">
             {initialData ? 'Editar Hábito' : 'Crear Nuevo Hábito'}
           </h2>
           <button
             onClick={handleCancel}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
+            className="text-[#cebea4]/70 hover:text-[#ff5730] transition-colors"
           >
             <X size={24} />
           </button>
@@ -78,7 +78,7 @@ export default function HabitForm({
         <div className="p-6 space-y-6">
           {/* Título */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-sm font-semibold mb-2">
               Título del hábito *
             </label>
             <input
@@ -87,8 +87,8 @@ export default function HabitForm({
               value={values.title}
               onChange={handleChange}
               placeholder="Ej: Hacer ejercicio 30 minutos"
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all ${
-                errors.title ? 'border-red-500' : 'border-gray-300'
+              className={`w-full px-4 py-3 border rounded-lg bg-black text-[#cebea4] placeholder:text-[#cebea4]/40 focus:ring-2 focus:ring-[#ff5730] focus:border-transparent transition-all ${
+                errors.title ? 'border-red-500' : 'border-[#cebea4]/60'
               }`}
             />
             {errors.title && (
@@ -98,7 +98,7 @@ export default function HabitForm({
 
           {/* Descripción */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-sm font-semibold mb-2">
               Descripción (opcional)
             </label>
             <textarea
@@ -107,15 +107,15 @@ export default function HabitForm({
               onChange={handleChange}
               placeholder="Describe tu hábito..."
               rows={3}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none ${
-                errors.description ? 'border-red-500' : 'border-gray-300'
+              className={`w-full px-4 py-3 border rounded-lg bg-black text-[#cebea4] placeholder:text-[#cebea4]/40 focus:ring-2 focus:ring-[#ff5730] focus:border-transparent transition-all resize-none ${
+                errors.description ? 'border-red-500' : 'border-[#cebea4]/60'
               }`}
             />
             <div className="flex justify-between mt-1">
               {errors.description && (
                 <p className="text-sm text-red-500">{errors.description}</p>
               )}
-              <p className="text-xs text-gray-500 ml-auto">
+              <p className="text-xs text-[#cebea4]/60 ml-auto">
                 {values.description.length}/200
               </p>
             </div>
@@ -123,7 +123,7 @@ export default function HabitForm({
 
           {/* Categoría */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-3">
+            <label className="block text-sm font-semibold mb-3">
               Categoría
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -132,8 +132,8 @@ export default function HabitForm({
                   key={cat.value}
                   className={`flex items-center justify-center gap-2 px-4 py-3 border-2 rounded-lg cursor-pointer transition-all ${
                     values.category === cat.value
-                      ? 'border-indigo-500 bg-indigo-50 shadow-md'
-                      : 'border-gray-200 hover:border-indigo-300'
+                      ? 'border-[#ff5730] bg-[#ff5730]/10 shadow-md'
+                      : 'border-[#cebea4]/40 hover:border-[#ff5730]'
                   }`}
                 >
                   <input
@@ -144,7 +144,7 @@ export default function HabitForm({
                     onChange={handleChange}
                     className="sr-only"
                   />
-                  <span className="font-medium text-gray-700">
+                  <span className="font-medium">
                     {cat.label}
                   </span>
                 </label>
@@ -153,23 +153,23 @@ export default function HabitForm({
           </div>
 
           {/* Opciones */}
-          <div className="space-y-4 bg-gray-50 p-4 rounded-lg">
+          <div className="space-y-4 bg-black/40 p-4 rounded-lg border border-[#cebea4]/40">
             <label className="flex items-center gap-3 cursor-pointer group">
               <input
                 type="checkbox"
                 name="isPublic"
                 checked={values.isPublic}
                 onChange={handleChange}
-                className="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                className="w-5 h-5 text-[#ff5730] border-[#cebea4]/60 rounded bg-black focus:ring-[#ff5730]"
               />
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <Globe size={18} className="text-gray-600" />
-                  <span className="font-medium text-gray-700">
+                  <Globe size={18} className="text-[#ff5730]" />
+                  <span className="font-medium">
                     Hábito público
                   </span>
                 </div>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-[#cebea4]/70 mt-1">
                   Aparecerás en el ranking global y otros podrán ver tu progreso
                 </p>
               </div>
@@ -181,16 +181,16 @@ export default function HabitForm({
                 name="trackTime"
                 checked={values.trackTime}
                 onChange={handleChange}
-                className="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                className="w-5 h-5 text-[#ff5730] border-[#cebea4]/60 rounded bg-black focus:ring-[#ff5730]"
               />
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <Clock size={18} className="text-gray-600" />
-                  <span className="font-medium text-gray-700">
+                  <Clock size={18} className="text-[#ff5730]" />
+                  <span className="font-medium">
                     Registrar tiempo
                   </span>
                 </div>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-[#cebea4]/70 mt-1">
                   Podrás ingresar cuánto tiempo dedicaste a este hábito
                 </p>
               </div>
@@ -201,13 +201,13 @@ export default function HabitForm({
           <div className="flex gap-3 pt-4">
             <button
               onClick={handleCancel}
-              className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors"
+              className="flex-1 px-6 py-3 border-2 border-[#cebea4]/60 text-[#cebea4] font-semibold rounded-lg hover:bg-white/5 transition-colors"
             >
               Cancelar
             </button>
             <button
               onClick={handleSubmit(handleFormSubmit)}
-              className="flex-1 px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors shadow-md hover:shadow-lg"
+              className="flex-1 px-6 py-3 bg-[#ff5730] text-black font-semibold rounded-lg hover:bg-[#ff865f] transition-colors shadow-md hover:shadow-lg"
             >
               {initialData ? 'Actualizar' : 'Crear Hábito'}
             </button>

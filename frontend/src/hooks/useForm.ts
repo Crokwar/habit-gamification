@@ -26,7 +26,7 @@ export const useForm = <T extends Record<string, any>>(
   const [touched, setTouched] = useState<Partial<Record<keyof T, boolean>>>({});
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target;
+    const { name, value, type } = e.target; // value real del campo
     const checked = (e.target as HTMLInputElement).checked;
     const newValue = type === 'checkbox' ? checked : value;
     
@@ -51,12 +51,18 @@ export const useForm = <T extends Record<string, any>>(
     }));
 
     if (validationFn) {
-      const fieldErrors = validationFn({ [name]: values[name as keyof T] } as T);
+      const fieldErrors = validationFn(values);
       if (fieldErrors[name as keyof T]) {
         setErrors(prev => ({
           ...prev,
           [name]: fieldErrors[name as keyof T]
         }));
+      } else {
+        setErrors(prev => {
+          const newErrors = { ...prev };
+          delete newErrors[name];
+          return newErrors;
+        })   
       }
     }
   };

@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Text, Enum
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, text, Enum
+from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from app.core.database import Base
@@ -25,6 +26,7 @@ class Habit(Base):
     track_time = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    days_of_week = Column(ARRAY(Integer), default=lambda: [0,1,2,3,4], server_default=text("ARRAY[0,1,2,3,4]"), nullable=False)
 
     completions = relationship("HabitCompletion", back_populates="habit")
     user = relationship("User", back_populates="habits")

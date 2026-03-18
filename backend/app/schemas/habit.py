@@ -9,6 +9,7 @@ class HabitBase(BaseModel):
     category: HabitCategory
     is_public: bool
     track_time: bool
+    days_of_week: list[int] = Field(default_factory=lambda: [0,1,2,3,4])
 
 class HabitCreate(HabitBase):
     pass

@@ -33,10 +33,10 @@ function Habits() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center">
-        <div className="text-center">
-          <Loader className="w-12 h-12 animate-spin text-indigo-600 mx-auto mb-4" />
-          <p className="text-gray-600">Cargando tus hábitos...</p>
+      <div className="min-h-screen bg-[#cebea4] flex items-center justify-center">
+        <div className="text-center text-[#cebea4] bg-black rounded-2xl border border-[#cebea4]/60 px-8 py-6 shadow-lg">
+          <Loader className="w-12 h-12 animate-spin text-[#ff5730] mx-auto mb-4" />
+          <p className="text-sm">Cargando tus hábitos...</p>
         </div>
       </div>
     );
@@ -44,16 +44,16 @@ function Habits() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center">
-        <div className="text-center bg-white p-8 rounded-xl shadow-lg">
+      <div className="min-h-screen bg-[#cebea4] flex items-center justify-center">
+        <div className="text-center bg-black text-[#cebea4] px-8 py-6 rounded-2xl shadow-lg border border-[#cebea4]/60 max-w-md">
           <div className="text-6xl mb-4">⚠️</div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">
+          <h2 className="text-2xl font-bold mb-2">
             Error al cargar hábitos
           </h2>
-          <p className="text-gray-600 mb-4">{error}</p>
+          <p className="mb-4">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+            className="px-6 py-2 bg-[#ff5730] text-black font-semibold rounded-lg hover:bg-[#ff865f] transition-colors"
           >
             Reintentar
           </button>
@@ -63,21 +63,21 @@ function Habits() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-      <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="min-h-screen bg-[#cebea4] p-4 sm:p-6">
+      <div className="max-w-6xl mx-auto bg-black text-[#cebea4] rounded-3xl border border-[#cebea4]/60 px-4 sm:px-8 py-8 shadow-lg">
         {/* Header con botón volver */}
         <div className="mb-8">
           <button
             onClick={() => navigate('/dashboard')}
-            className="flex items-center gap-2 text-indigo-600 hover:text-indigo-800 mb-4 transition-colors"
+            className="flex items-center gap-2 text-[#ff5730] hover:text-[#ff865f] mb-4 transition-colors"
           >
             <ArrowLeft size={20} />
             Volver al Dashboard
           </button>
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">
+          <h1 className="text-4xl font-bold mb-2">
             Mis Hábitos
           </h1>
-          <p className="text-gray-600">
+          <p>
             Crea y gestiona tus hábitos diarios para mejorar tu productividad
           </p>
         </div>
@@ -85,7 +85,7 @@ function Habits() {
         {/* Botón Crear */}
         <button
           onClick={() => setIsFormOpen(true)}
-          className="mb-6 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+          className="mb-6 bg-[#ff5730] hover:bg-[#ff865f] text-black px-6 py-3 rounded-xl font-semibold flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
         >
           <Plus size={20} />
           Crear Nuevo Hábito
@@ -103,17 +103,17 @@ function Habits() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 bg-white rounded-xl shadow-md">
+          <div className="text-center py-16 rounded-2xl border border-[#cebea4]/60 bg-black/40">
             <div className="text-6xl mb-4">📝</div>
-            <h3 className="text-xl font-semibold text-gray-700 mb-2">
+            <h3 className="text-xl font-semibold mb-2">
               No tienes hábitos todavía
             </h3>
-            <p className="text-gray-500 mb-4">
+            <p className="mb-4">
               Crea tu primer hábito para comenzar tu viaje de productividad
             </p>
             <button
               onClick={() => setIsFormOpen(true)}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#ff5730] text-black rounded-lg hover:bg-[#ff865f] transition-colors font-semibold"
             >
               <Plus size={20} />
               Crear mi primer hábito

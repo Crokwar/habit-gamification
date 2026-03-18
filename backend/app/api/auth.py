@@ -3,9 +3,10 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.core.config import settings
-from app.core.security import create_access_token
+from app.core.security import create_access_token, revoke_token, oauth2_scheme, get_current_user
 from app.schemas.auth import UserRegister, UserLogin, UserResponse, AuthResponse
 from app.services.auth_service import AuthService
+from app.models.user import User
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -57,6 +58,20 @@ def login(user_data: UserLogin, db: Session = Depends(get_db)):
         "token_type": "bearer",
         "user": user
     }
+
+
+@router.post("/logout")
+def logout(
+    token: str = Depends(oauth2_scheme),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Cerrar sesión del usuario actual.
+
+    - Revoca el token JWT actual en el backend
+    """
+    revoke_token(token)
+    return {"detail": "Logged out successfully"}
 
 @router.get("/check-username/{username}")
 def check_username(username: str, db: Session = Depends(get_db)):

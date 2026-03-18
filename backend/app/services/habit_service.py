@@ -74,15 +74,26 @@ class HabitService:
         Obtener lista de habitos del usuario con estado de completado hoy
         """
         today = datetime.now().date()
-        habits = HabitService.get_habits(db, user_id)
+        dayOfWeek = datetime.now().weekday()
+
+        results = (
+            db.query(Habit, HabitCompletion)
+            .outerjoin(
+                HabitCompletion,
+                (Habit.id == HabitCompletion.habit_id) &
+                (func.date(HabitCompletion.completed_at) == today)
+            )
+            .filter(
+                Habit.user_id == user_id,
+                Habit.days_of_week.contains([dayOfWeek])
+            )
+            .all()
+        )
+
         listHabitsResult = []
 
-        for habit in habits:
-            completions = db.query(HabitCompletion).filter(
-                HabitCompletion.habit_id == habit.id, 
-                func.date(HabitCompletion.completed_at) == today
-            ).first()
-            habit.is_completed_today = completions is not None
+        for habit, completion in results:
+            habit.is_completed_today = completion is not None
             listHabitsResult.append(HabitTodayResponse.model_validate(habit))
             
         return listHabitsResult

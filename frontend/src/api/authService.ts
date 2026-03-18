@@ -64,6 +64,19 @@ export const authService = {
     return handleResponse<AuthResponse>(response);
   },
 
+  // Logout (cerrar sesión en backend)
+  logout: async (token: string): Promise<void> => {
+    const response = await fetch(`${API_URL}/auth/logout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+    });
+    // ignoramos el cuerpo, solo verificamos que la respuesta sea ok
+    await handleResponse<{ detail: string }>(response);
+  },
+
   // Validacion de formulario de registro //
   checkUsernameAvailability: async (username: string): Promise<{available: boolean}>=> {
     const response = await fetch(`${API_URL}/auth/check-username/${encodeURIComponent(username)}`)

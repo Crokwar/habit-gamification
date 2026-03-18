@@ -1,12 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useRegisterForm } from '@/hooks/useRegisterForm';
 
-interface RegisterFormData {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
 function Register() {
 
   const navigate = useNavigate();
@@ -59,9 +53,10 @@ function Register() {
               id="username"
               name="username"
               value={values.username}
+              onBlur={handleBlur}
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-4 focus:ring-purple-500 focus:border-transparent"
-              placeholder="usuario123" required />
+              placeholder="usuario123"/>
             {/* Mostrar estado de verificación */}
             {usernameStatus === 'checking' && (
               <p className="text-sm text-blue-600 mt-1">🔍 Verificando disponibilidad...</p>
@@ -90,9 +85,10 @@ function Register() {
               id="email"
               name="email"
               value={values.email}
+              onBlur={handleBlur}
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-4 focus:ring-purple-500 focus:border-transparent"
-              placeholder="ejemplo@email.com" required />
+              placeholder="ejemplo@email.com"/>
               {/* Mostrar estado de verificación */}
               {emailStatus === 'checking' && (
                 <p className="text-sm text-blue-600 mt-1">🔍 Verificando disponibilidad...</p>
@@ -119,10 +115,11 @@ function Register() {
               id="password"
               name="password"
               value={values.password}
+              onBlur={handleBlur}
               onChange={handleChange}
               minLength={8}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-4 focus:ring-purple-500 focus:border-transparent"
-              placeholder="••••••••" required />
+              placeholder="••••••••"/>
             {/* Mostrar error de validación */}
             {touched.password && errors.password && (
               <p className="text-sm text-red-600 mt-1">{errors.password}</p>
@@ -139,10 +136,11 @@ function Register() {
               id="confirmPassword"
               name="confirmPassword"
               value={values.confirmPassword}
+              onBlur={handleBlur}
               onChange={handleChange}
               minLength={8}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-4 focus:ring-purple-500 focus:border-transparent"
-              placeholder="••••••••" required />
+              placeholder="••••••••"/>
             {/* Mostrar error de validación */}
             {touched.confirmPassword && errors.confirmPassword && (
               <p className="text-sm text-red-600 mt-1">{errors.confirmPassword}</p>

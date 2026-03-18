@@ -44,52 +44,48 @@ function Checklist() {
 
   const progress = habits.length === 0 ? 0 : Math.round((habits.filter(habit => habit.is_completed_today).length / habits.length) * 100)
 
-  if (loading) return <div>Cargando ... </div>
-  if (error) return <div>{error}</div>
+  if (loading) return <div className="text-[#cebea4] text-center">Cargando ... </div>
+  if (error) return <div className="text-[#cebea4] text-center">{error}</div>
     
   return (
-      <div className="max-w-md mx-auto bg-white rounded-2xl shadow-lg overflow-hidden mb-6">
+      <div className="max-w-md mx-auto bg-black rounded-2xl shadow-lg overflow-hidden mb-6 text-[#cebea4]">
   
-        {/* Header */}
-        <div className="bg-black text-white px-6 py-4 flex justify-between items-center">
-          <h2 className="font-semibold text-lg">Hábitos para hoy</h2>
-        </div>
-  
-        <div className="p-6 space-y-6">
-  
+        {/* Header + Progreso */}
+        <div className="p-6 border border-[#cebea4] rounded-2xl mx-4 mt-4 mb-8">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="font-semibold text-xl">Hábitos para hoy</h2>
+          </div>
+
           {/* Barra de progreso */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-500">{getProgressMessage(progress)}</span>
+              <span className="text-sm">{getProgressMessage(progress)}</span>
               <span className="text-sm font-medium">{progress}%</span>
             </div>
   
-            <div className="w-full bg-gray-200 rounded-full h-3">
+            <div className="w-full bg-[#cebea4]/30 rounded-full h-3">
               <div
-                className="bg-purple-500 h-3 rounded-full transition-all duration-500"
+                className="bg-[#ff5730] h-3 rounded-full transition-all duration-500"
                 style={{ width: `${progress}%` }}
               />
             </div>
           </div>
+        </div>
   
+        <div className="px-6 pb-6">
           {/* Checklist */}
-          <ul className="space-y-4">
+          <ul className="space-y-5">
             {habits.map((habit) => (
               <li
                 key={habit.id}
-                className="flex items-center justify-between bg-gray-50 p-4 rounded-xl"
+                className="flex items-center justify-between p-4 rounded-xl border border-[#cebea4]"
               >
-                <div className="flex items-start gap-3">
-  
-                  {/* Icono */}
-                  <div className="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-full">
-                    📌
-                  </div>
+                <div className="flex items-start gap-3 w-full">
   
                   {/* Texto */}
                   <div>
-                    <p className="font-medium text-sm">{habit.title}</p>
-                    <p className="text-xs text-gray-500">
+                    <p className="font-semibold text-base">{habit.title}</p>
+                    <p className="text-xs">
                       {habit.description}
                     </p>
                   </div>
@@ -97,11 +93,16 @@ function Checklist() {
   
                 {/* Estado */}
                 {habit.is_completed_today ? (
-                  <div className="w-6 h-6 bg-lime-400 rounded-full flex items-center justify-center">
+                  <button
+                    className="w-6 h-6 border-2 border-[#ff5730] bg-[#ff5730] rounded flex items-center justify-center text-black cursor-pointer transition-transform duration-200 hover:scale-105"
+                  >
                     ✓
-                  </div>
+                  </button>
                 ) : (
-                  <button onClick={() => handleComplete(habit.id)} className="w-6 h-6 border-2 border-gray-300 rounded hover:border-purple-500 hover:bg-purple-50 cursor-pointer transition">
+                  <button
+                    onClick={() => handleComplete(habit.id)}
+                    className="w-6 h-6 border-2 border-[#cebea4] rounded cursor-pointer transition-colors transition-transform duration-200 hover:border-[#ff5730] hover:bg-[#ff5730] hover:scale-105"
+                  >
                   </button>
                 )}
               </li>
