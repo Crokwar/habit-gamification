@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.api import auth, habits
+from app.api import auth, habits, timer_router
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -26,6 +26,7 @@ app.add_middleware(
 # Incluir routers
 app.include_router(auth.router)
 app.include_router(habits.router)
+app.include_router(timer_router.router)
 
 @app.get("/")
 def root():

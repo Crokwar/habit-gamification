@@ -33,6 +33,30 @@ class HabitResponse(HabitBase):
 class HabitTodayResponse(HabitResponse):
     is_completed_today: bool
 
+#Respuesta para la completacion de un habito con o sin timer
+class HabitCompletionResponse(BaseModel):
+    id: int
+    user_id: int
+    completed_at: datetime
+    timer_session_id: int | None = None 
+    time_spent: int | None = None 
+    points_earned: int
+
+    model_config = ConfigDict(from_attributes=True)
+
+#Esquema para timers
+class  TimerSessionResponse(BaseModel):
+    id: int
+    user_id: int
+    habit_id: int
+    started_at: datetime
+    ended_at: datetime | None = None
+    status: TimerStatus
+    created_at: datetime
+    updated_at: datetime | None = None
+
+    model_config = ConfigDict(from_attributes=True)
+
 #Respuesta para la completacion de un habito
 class HabitCompleteRequest(BaseModel):
-    time_spent: int | None = None
+    time_spent: int | None = None 

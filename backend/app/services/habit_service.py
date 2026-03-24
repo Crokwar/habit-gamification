@@ -1,8 +1,10 @@
 from sqlalchemy.orm import Session
-from app.schemas.habit import HabitResponse, HabitCreate, HabitUpdate, HabitTodayResponse, HabitCompleteRequest
+from app.schemas.habit import HabitResponse, HabitCreate, HabitUpdate, HabitTodayResponse, HabitCompleteRequest, TimerSessionResponse, HabitCompletionResponse
 from app.models.habits import Habit, HabitCompletion
+from app.models.timer_sessions import TimerSessions, TimerStatus
 from sqlalchemy import func
-from datetime import datetime
+from datetime import datetime, timezone
+from fastapi import HTTPException, status
 
 class HabitService: 
 
@@ -131,4 +133,5 @@ class HabitService:
         # retornar el habito con true en completado
         habit.is_completed_today = True
         return HabitTodayResponse.model_validate(habit)
+
 
