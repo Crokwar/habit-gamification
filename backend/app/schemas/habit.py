@@ -1,6 +1,7 @@
 from pydantic import BaseModel, ConfigDict, Field
 from app.models.habits import HabitCategory
 from datetime import datetime
+from app.models.timer_sessions import TimerStatus
 
 
 class HabitBase(BaseModel):

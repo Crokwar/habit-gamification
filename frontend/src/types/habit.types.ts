@@ -39,6 +39,19 @@ export interface HabitCompletion {
     points_earned: number;  // 1 punto por cada completado pensado por ahora
 }
 
+export type TimerStatus = "running" | "completed" | "canceled" | "expired";
+
+export interface TimerSession {
+    id: number;
+    user_id: number;
+    habit_id: number;
+    started_at: string;
+    ended_at?: string;
+    status: TimerStatus;
+    created_at: string;
+    updated_at?: string;
+}
+
 export interface CategoryOption {
     value: HabitCategory;
     label: string;
