@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import habitService from '@/api/habitService'
 import type { HabitToday } from '@/types/habit.types';
+import { TimerModal } from './habits/TimerModal';
 
 
 function Checklist() {
@@ -8,6 +9,7 @@ function Checklist() {
   const [habits, setHabits] = useState<HabitToday[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null) 
+  const [activeTimer, setActiveTimer] = useState< HabitToday | null>(null)
   
   const getProgressMessage = (progress: number): string => {
     if (progress === 100) return '🎉 ¡Mas ready que 10 readys!'
@@ -92,16 +94,31 @@ function Checklist() {
                 </div>
   
                 {/* Estado */}
-                {habit.is_completed_today ? (
+                {habit.is_completed_today 
+                ? (
                   <button
                     className="w-6 h-6 border-2 border-[#ff5730] bg-[#ff5730] rounded flex items-center justify-center text-black cursor-pointer transition-transform duration-200 hover:scale-105"
                   >
                     ✓
                   </button>
+                ) : !habit.is_completed_today && habit.track_time
+                ? (
+                  <button
+                    onClick={() => setActiveTimer(habit)}
+                    className="w-6 h-6 border-2 border-[#cebea4] rounded cursor-pointer flex items-center justify-center transition-all duration-200 hover:border-[#ff5730] hover:bg-[#ff5730] hover:scale-105"
+                  > 
+                    <svg
+                      className="w-3 h-3 ml-[1px]"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </button>
                 ) : (
                   <button
-                    onClick={() => handleComplete(habit.id)}
-                    className="w-6 h-6 border-2 border-[#cebea4] rounded cursor-pointer transition-colors transition-transform duration-200 hover:border-[#ff5730] hover:bg-[#ff5730] hover:scale-105"
+                  onClick={() => handleComplete(habit.id)}
+                  className="w-6 h-6 border-2 border-[#cebea4] rounded cursor-pointer flex items-center justify-center transition-all duration-200 hover:border-[#ff5730] hover:bg-[#ff5730] hover:scale-105"
                   >
                   </button>
                 )}
@@ -109,6 +126,19 @@ function Checklist() {
             ))}
           </ul>
         </div>
+        {activeTimer && (
+          <TimerModal
+              habitId={activeTimer.id}
+              habitTitle={activeTimer.title}
+              onClose={() => setActiveTimer(null)}
+              onComplete={() => {
+                  setHabits(prev => prev.map(h =>
+                    h.id === activeTimer.id ? {...h, is_completed_today: true} : h
+                  ))
+                  setActiveTimer(null)
+              }}
+          />
+        )}
       </div>
     );
 }
