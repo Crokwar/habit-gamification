@@ -2,7 +2,7 @@
 import { X, Clock, Globe } from 'lucide-react';
 import { useForm } from '../../hooks/useForm';
 import { validateHabitForm } from '../../utils/validators';
-import { HABIT_CATEGORIES } from '../../utils/constants';
+import { DAY_MAP, HABIT_CATEGORIES } from '../../utils/constants';
 import type { HabitFormData, HabitCreateDTO } from '../../types/habit.types';
 import type { ServiceResponse } from '../../types/api.types';
 
@@ -19,16 +19,19 @@ export default function HabitForm({
   onSubmit, 
   initialData = null 
 }: HabitFormProps) {
+
   const {
     values,
     errors,
     handleChange,
     handleSubmit,
-    reset
+    reset,
+    setFieldValue
   } = useForm<HabitFormData>(
     initialData || {
       title: '',
       description: '',
+      days_of_week: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
       isPublic: false,
       trackTime: false,
       category: 'health'
@@ -37,10 +40,15 @@ export default function HabitForm({
   );
 
   const handleFormSubmit = async (formValues: HabitFormData) => {
+
+    const daysAsNumber = formValues.days_of_week.map(
+      (day) => DAY_MAP[day]
+    )
     // Convertir camelCase a snake_case para el backend
     const dto: HabitCreateDTO = {
       title: formValues.title,
       description: formValues.description || undefined,
+      days_of_week: daysAsNumber,
       category: formValues.category,
       is_public: formValues.isPublic,
       track_time: formValues.trackTime
@@ -59,6 +67,24 @@ export default function HabitForm({
   };
 
   if (!isOpen) return null;
+
+
+  // Dias de la semana para los botones de repeticion
+  const days = [
+    { label: "L", value: "monday" },
+    { label: "M", value: "tuesday" },
+    { label: "W", value: "wednesday" },
+    { label: "J", value: "thursday" },
+    { label: "V", value: "friday" },
+    { label: "S", value: "saturday" },
+    { label: "D", value: "sunday" },
+  ]
+  // interruptar de dias
+  const toggleDay = (day: string) => {
+    const daysCurrent = values.days_of_week
+    const daysArray = daysCurrent.includes(day) ? daysCurrent.filter((d) => d !== day) : [...daysCurrent, day]
+    setFieldValue( 'days_of_week', daysArray);
+  };
 
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
@@ -120,6 +146,33 @@ export default function HabitForm({
               </p>
             </div>
           </div>
+
+          {/*Dias*/}
+          <div className="flex flex-col gap-2">
+            <p className="text-sm text-gray-400">Repetir en</p>
+
+            <div className="flex gap-2">
+              {days.map((day) => {
+                const isActive = values.days_of_week.includes(day.value)
+
+                return (
+                  <button
+                    key={day.value}
+                    type="button"
+                    onClick={() => toggleDay(day.value)}
+                    className={`w-10 h-10 rounded-full border transition 
+                      ${isActive 
+                        ? "bg-orange-500 text-white border-orange-500" 
+                        : "border-gray-500 text-gray-300 hover:border-orange-500"}
+                    `}
+                  >
+                    {day.label}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
 
           {/* Categoría */}
           <div>

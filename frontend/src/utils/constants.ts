@@ -77,3 +77,13 @@ export const ERROR_MESSAGES = {
 } as const;
 
 export const DEBOUNCE_DELAY = 500; // tiempo de debounce para validacion de formulario de registro
+
+export const DAY_MAP: Record<string, number> = {
+  "monday": 0,
+  "tuesday": 1,
+  "wednesday": 2,
+  "thursday": 3,
+  "friday": 4,
+  "saturday": 5,
+  "sunday": 6,
+};

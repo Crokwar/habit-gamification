@@ -36,7 +36,8 @@ class HabitService:
             description = habit_data.description,
             category = habit_data.category,
             is_public = habit_data.is_public,
-            track_time = habit_data.track_time
+            track_time = habit_data.track_time,
+            days_of_week = habit_data.days_of_week
         )
 
         # guardar habito nuevo en la DB

@@ -5,6 +5,7 @@ export interface Habit { //represents a habit in the database, snake_case
     user_id: number;
     title: string;
     description?: string;
+    days_of_week?: number[];
     category: HabitCategory;
     is_public: boolean;
     track_time: boolean;
@@ -12,9 +13,10 @@ export interface Habit { //represents a habit in the database, snake_case
     updated_at: string;
 }
 
-export interface HabitFormData { //represents a habit in the form
+export interface HabitFormData { //represents a habit in the form - front
     title: string;
     description: string;
+    days_of_week: string[];
     category: HabitCategory;
     isPublic: boolean;
     trackTime: boolean;
@@ -23,6 +25,7 @@ export interface HabitFormData { //represents a habit in the form
 export interface HabitCreateDTO { // data transfer object
     title: string;
     description?: string;
+    days_of_week: number[];
     category: HabitCategory;
     is_public: boolean;
     track_time: boolean;
