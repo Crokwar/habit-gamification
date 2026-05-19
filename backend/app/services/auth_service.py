@@ -3,6 +3,7 @@ from fastapi import HTTPException, status
 from app.models.user import User
 from app.schemas.auth import UserRegister
 from app.core.security import get_password_hash, verify_password
+from app.models.user_stats import UserStats, RankCategory
 
 class AuthService:
 
@@ -33,6 +34,21 @@ class AuthService:
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
+
+        # crear estadisticas del usuario
+        new_user_stats = UserStats(
+            user_id=new_user.id,
+            total_xp=0,
+            current_level_xp=0,
+            xp_to_next_level=200,
+            level=1,
+            level_progress_pct=0,
+            streak=0,
+            rank=RankCategory.D
+        )
+        db.add(new_user_stats)
+        db.commit()
+        db.refresh(new_user_stats)
 
         return new_user
 

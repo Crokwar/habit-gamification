@@ -15,3 +15,4 @@ class User(Base):
     # Relaciones
     habits = relationship("Habit", back_populates="user")
     timer_sessions = relationship("TimerSessions", back_populates="user")
+    user_stats = relationship("UserStats", back_populates="user", uselist=False)

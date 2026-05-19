@@ -17,6 +17,7 @@ from app.core.database import Base
 from app.models.user import User
 from app.models.habits import Habit, HabitCompletion
 from app.models.timer_sessions import TimerSessions
+from app.models.user_stats import UserStats
 
 # Objeto de configuracion de Alembic
 config = context.config

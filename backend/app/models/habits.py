@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from app.core.database import Base
 import enum
 
-class HabitCategory(str, enum.Enum):
+class HabitCategory(str, enum.Enum): # enum personalizado de strings
     health = "health"
     finance = "finance"
     personal = "personal"
