@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import { X, Menu } from 'lucide-react';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "../ui/dropdown-menu";
 import { AuthContext } from "../../context/AuthContext";
+import { LevelRing } from "./LevelRing";
 
 const NAV_LINK_CLASSES =
   "text-[#ff5730] font-medium cursor-pointer transition-transform duration-200 hover:scale-105";
@@ -59,6 +60,16 @@ function Navbar() {
                     <button onClick={handleLogout} className={NAV_LINK_CLASSES}>
                         Log Out
                     </button>
+
+                    <div className="flex items-center gap-2">
+                        <img
+                            src="/LogoCoco.png"
+                            alt="Logo Habit Gamification"
+                            className="h-10 w-10 object-contain rounded-full"
+                        />
+                        <LevelRing/>
+                    </div>
+
                 </div>
 
                 {/** Opciones burger*/}

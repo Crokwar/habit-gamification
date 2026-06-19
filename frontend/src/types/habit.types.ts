@@ -1,6 +1,6 @@
 export type HabitCategory = 'health' | 'finance' | 'personal' | 'work' | 'hobby' | 'study' | 'other';
 
-export interface Habit { //represents a habit in the database, snake_case
+export interface Habit { //represents a habit in the database, snake_case - HabitDto
     id: number;
     user_id: number;
     title: string;
@@ -22,7 +22,7 @@ export interface HabitFormData { //represents a habit in the form - front
     trackTime: boolean;
 }
 
-export interface HabitCreateDTO { // data transfer object
+export interface HabitCreateDTO { // data transfer object - HabitCreateRequest
     title: string;
     description?: string;
     days_of_week: number[];
@@ -31,7 +31,7 @@ export interface HabitCreateDTO { // data transfer object
     track_time: boolean;
 }
 
-export interface HabitUpdateDTO extends Partial<HabitCreateDTO> {} //updates opcionales
+export interface HabitUpdateDTO extends Partial<HabitCreateDTO> {} //updates opcionales - HabitCompletionDto
 
 export interface HabitCompletion {
     id: number;
@@ -39,7 +39,7 @@ export interface HabitCompletion {
     user_id: number;
     completed_at: string;
     time_spent?: number; // minutes
-    points_earned: number;  // 1 punto por cada completado pensado por ahora
+    points_earned: number;  // 10 fácil, 20 medio, 30 difícil (según timer/duración)
 }
 
 export type TimerStatus = "running" | "completed" | "canceled" | "expired";

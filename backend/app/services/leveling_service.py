@@ -4,9 +4,28 @@ from fastapi import HTTPException, status
 
 class LevelingService:
 
+    XP_EASY = 10
+    XP_MEDIUM = 20
+    XP_HARD = 30
+
     @staticmethod
     def xp_required_for_level(level: int) -> int:
         return (level**2) * 200
+
+    @staticmethod
+    def calculate_xp_for_completion(track_time: bool, time_spent_minutes: float | int | None) -> int:
+        if not track_time:
+            return LevelingService.XP_EASY
+
+        if time_spent_minutes is None:
+            return LevelingService.XP_EASY
+
+        minutes = int(round(time_spent_minutes))
+        if minutes < 20:
+            return LevelingService.XP_EASY
+        if minutes <= 60:
+            return LevelingService.XP_MEDIUM
+        return LevelingService.XP_HARD
     
     @staticmethod
     def calculate_rank(level: int, streak: int) -> RankCategory:
@@ -36,6 +55,7 @@ class LevelingService:
             dif = user_stats.current_level_xp - xp_to_next_level
             user_stats.current_level_xp = dif 
             xp_to_next_level = LevelingService.xp_required_for_level(user_stats.level)
+        user_stats.xp_to_next_level = xp_to_next_level
         user_stats.level_progress_pct = (user_stats.current_level_xp / xp_to_next_level) * 100
         user_stats.rank = LevelingService.calculate_rank(user_stats.level, user_stats.streak)
         db.commit()

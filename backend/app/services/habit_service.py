@@ -5,6 +5,7 @@ from app.models.timer_sessions import TimerSessions, TimerStatus
 from sqlalchemy import func
 from datetime import datetime, timezone
 from fastapi import HTTPException, status
+from app.services.leveling_service import LevelingService
 
 class HabitService: 
 
@@ -121,15 +122,20 @@ class HabitService:
         if existing:
             return None
 
+        time_spent = data.time_spent if data else None
+        points_earned = LevelingService.calculate_xp_for_completion(habit.track_time, time_spent)
+
         # crear un nuevo registro de completacion
         completion = HabitCompletion(
             habit_id = habit_id,
             user_id = user_id,
-            time_spent = data.time_spent if data else None,
-            points_earned = 1
+            time_spent = time_spent,
+            points_earned = points_earned
         )
         db.add(completion)
         db.commit()
+
+        LevelingService.add_xp(user_id, completion.points_earned, db)
 
         # retornar el habito con true en completado
         habit.is_completed_today = True

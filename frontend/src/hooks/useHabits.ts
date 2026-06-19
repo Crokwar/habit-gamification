@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import habitService from '../api/habitService';
 import type { Habit, HabitCreateDTO, HabitUpdateDTO } from '../types/habit.types';
 import type { ServiceResponse } from '../types/api.types';
+import { useInvalidateUserStats } from './useUserStats';
 
 interface UseHabitsReturn {
   habits: Habit[];
@@ -19,6 +20,7 @@ export const useHabits = (): UseHabitsReturn => {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const invalidateStats = useInvalidateUserStats();
 
   useEffect(() => {
     fetchHabits();
@@ -87,6 +89,7 @@ export const useHabits = (): UseHabitsReturn => {
     try {
       const result = await habitService.complete(id, timeSpent);
       await fetchHabits();
+      await invalidateStats();
       return { success: true, data: result };
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Error al completar hábito';

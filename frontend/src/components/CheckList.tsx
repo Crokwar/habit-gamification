@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import habitService from '@/api/habitService'
 import type { HabitToday } from '@/types/habit.types';
 import { TimerModal } from './habits/TimerModal';
+import { useInvalidateUserStats } from '@/hooks/useUserStats';
 
 
 function Checklist() {
@@ -10,6 +11,7 @@ function Checklist() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null) 
   const [activeTimer, setActiveTimer] = useState< HabitToday | null>(null)
+  const invalidateStats = useInvalidateUserStats()
   
   const getProgressMessage = (progress: number): string => {
     if (progress === 100) return '🎉 ¡Mas ready que 10 readys!'
@@ -39,6 +41,7 @@ function Checklist() {
       setHabits(prev => prev.map(habit => 
         habit.id === id ? { ...habit, is_completed_today: true } : habit
       ))
+      await invalidateStats()
     } catch (err) {
       setError('Error al completar el hábito')
     }
@@ -131,11 +134,12 @@ function Checklist() {
               habitId={activeTimer.id}
               habitTitle={activeTimer.title}
               onClose={() => setActiveTimer(null)}
-              onComplete={() => {
+              onComplete={async () => {
                   setHabits(prev => prev.map(h =>
                     h.id === activeTimer.id ? {...h, is_completed_today: true} : h
                   ))
                   setActiveTimer(null)
+                  await invalidateStats()
               }}
           />
         )}

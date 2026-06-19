@@ -3,6 +3,7 @@ from app.schemas.habit import TimerSessionResponse, HabitCompletionResponse
 from app.models.timer_sessions import TimerSessions, TimerStatus
 from datetime import datetime, timezone
 from app.services.habit_service import HabitService
+from app.services.leveling_service import LevelingService
 from app.models.habits import HabitCompletion
 from fastapi import HTTPException, status
     
@@ -59,8 +60,11 @@ class TimerService:
             timer_session.status = TimerStatus.completed
             timer_session.ended_at = datetime.now(timezone.utc)
 
-            # calcular time spent
-            time_spent = (timer_session.ended_at - timer_session.started_at).total_seconds()/60
+            # calcular time spent (minutos)
+            time_spent = int(round(
+                (timer_session.ended_at - timer_session.started_at).total_seconds() / 60
+            ))
+            points_earned = LevelingService.calculate_xp_for_completion(True, time_spent)
 
             # actualizar registro en HabitCompletion table
             completion = HabitCompletion(
@@ -69,11 +73,14 @@ class TimerService:
                 completed_at = timer_session.ended_at,
                 timer_session_id = timer_session.id,
                 time_spent = time_spent,
-                points_earned = 1
+                points_earned = points_earned
             )
 
             db.add(completion)
             db.commit()
+
+            LevelingService.add_xp(user_id, completion.points_earned, db)
+
             db.refresh(completion)
             return completion
         except:
