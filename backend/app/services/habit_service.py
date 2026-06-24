@@ -112,6 +112,24 @@ class HabitService:
         if not habit:
             return None
 
+        
+"""         # traer al usuario para conocer su zona horaria
+        user = db.query(User).filter(User.id == user_id).first()
+        zona_usuario = ZoneInfo(user.timezone)
+
+        # verificar si el habito se completo hoy o no (hoy = dia local del usuario)
+        today = datetime.now(timezone.utc).astimezone(zona_usuario).date()
+        existing = db.query(HabitCompletion).filter(
+            HabitCompletion.habit_id == habit_id,
+            HabitCompletion.user_id == user_id,
+            func.date(HabitCompletion.completed_at) == today
+        ).first()
+        if existing:
+            return None
+
+        time_spent = data.time_spent if data else None
+        points_earned = LevelingService.calculate_xp_for_completion(habit.track_time, time_spent) """
+
         # verificar si el habito se completo hoy o no
         today = datetime.now().date()
         existing = db.query(HabitCompletion).filter(
